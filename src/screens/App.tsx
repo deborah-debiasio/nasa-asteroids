@@ -7,12 +7,14 @@ import { NasaService } from '../services/NasaService';
 function App(): React.JSX.Element {
  
 	const [astheroids, setAstheroids] = useState<Array<Astheroid>>();
-	const getAstheroids = async () => {
+	const getAstheroids = async ()=> {
 		try {
+
+			console.log('HERREE ', process.env.NASA_API_KEY);
 			const response = await NasaService.getAsteroids();
 			console.log('RESP ', response);
 		} catch (e: any) {
-			console.log('ERROR ', e.error);
+			console.log('ERROR ', e);
 		}
 	}
 
