@@ -5,18 +5,22 @@ import { SafeAreaView, StyleSheet, Text, useWindowDimensions, View } from 'react
 import { NasaService } from '../services/NasaService';
 import Carousel from "react-native-reanimated-carousel";
 import { AstheroidItem } from '../components/AstheroidItem';
+import { Loader } from '../components/Loader';
+import { Colors } from '../assets/Colors';
 
 function App(): React.JSX.Element {
 	const { height, width } = useWindowDimensions();
+	const [astheroids, setAstheroids] = useState<Array<Astheroid>>([]);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const scale = 1;
 	const PAGE_WIDTH = width * scale;
 	const PAGE_HEIGHT = 240 * scale;
 
 
-	const [astheroids, setAstheroids] = useState<Array<Astheroid>>([]);
 	const getAstheroids = async ()=> {
 		try {
+			setIsLoading(true);
 			const todayDate = moment().format("YYYY-MM-DD");
 			const response = await NasaService.getAsteroids(todayDate);
 			if (response?.data?.near_earth_objects[todayDate]) {
@@ -25,6 +29,8 @@ function App(): React.JSX.Element {
 			console.log('RESP ', response.data.near_earth_objects[todayDate]);
 		} catch (e: any) {
 			console.log('ERROR ', e);
+		} finally {
+			setIsLoading(false);
 		}
 	}
 
@@ -32,42 +38,28 @@ function App(): React.JSX.Element {
 		getAstheroids();
 	}, []);
 
-	return <SafeAreaView>
-		<View id="carousel-component">
-			<Carousel
-				loop
-				style={{
-					width: width,
-					height: height,
-					justifyContent: "center",
-					alignItems: "center",
-				}}
-				width={width}
-				height={height}
-				data={astheroids ?? []}
-				renderItem={({item, index }) => <AstheroidItem astheroid={item}/>}
-			/>
-		</View>
+	return <SafeAreaView style={{ backgroundColor: Colors.black }}>
+		{isLoading ?
+			<Loader/>
+		:
+			<View id="carousel-component">
+				<Carousel
+					loop
+					style={{
+						width: width,
+						height: height,
+						justifyContent: "center",
+						alignItems: "center",
+						backgroundColor: Colors.black,
+					}}
+					width={width}
+					height={height}
+					data={astheroids ?? []}
+					renderItem={({item, index }) => <AstheroidItem astheroid={item}/>}
+				/>
+			</View>
+		}
 	</SafeAreaView>;
 }
 
 export default App;
-
-const styles = StyleSheet.create({
-	sectionContainer: {
-		marginTop: 32,
-		paddingHorizontal: 24,
-	},
-	sectionTitle: {
-		fontSize: 24,
-		fontWeight: '600',
-	},
-	sectionDescription: {
-		marginTop: 8,
-		fontSize: 18,
-		fontWeight: '400',
-	},
-	highlight: {
-		fontWeight: '700',
-	},
-});
