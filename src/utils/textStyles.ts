@@ -8,6 +8,12 @@ export const textStyles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: 'bold',
     },
+    subTitle: {
+        color: Colors.white,
+        fontSize: 20,
+        textAlign: 'center',
+        fontWeight: 'bold',
+    },
     description: {
         color: Colors.white,
         fontSize: 16,

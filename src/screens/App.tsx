@@ -1,7 +1,7 @@
 
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { SafeAreaView, useWindowDimensions, View } from 'react-native';
 import { NasaService } from '../services/NasaService';
 import Carousel from "react-native-reanimated-carousel";
 import { AstheroidItem } from '../components/AstheroidItem';
@@ -13,11 +13,6 @@ function App(): React.JSX.Element {
 	const [astheroids, setAstheroids] = useState<Array<Astheroid>>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-	const scale = 1;
-	const PAGE_WIDTH = width * scale;
-	const PAGE_HEIGHT = 240 * scale;
-
-
 	const getAstheroids = async ()=> {
 		try {
 			setIsLoading(true);
@@ -26,7 +21,6 @@ function App(): React.JSX.Element {
 			if (response?.data?.near_earth_objects[todayDate]) {
 				setAstheroids(response?.data?.near_earth_objects[todayDate]);
 			}
-			console.log('RESP ', response.data.near_earth_objects[todayDate]);
 		} catch (e: any) {
 			console.log('ERROR ', e);
 		} finally {

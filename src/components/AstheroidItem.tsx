@@ -20,7 +20,7 @@ export const AstheroidItem = ({ astheroid }: Props) => {
         <LottieView style={{ height: getAstheroidSize(maxSize), width: getAstheroidSize(maxSize) }} source={images.astheroidLottie} autoPlay loop />
 
         <View style={styles.infoContainer}>
-            <Text style={textStyles.title}>{strings.size}</Text>
+            <Text style={textStyles.subTitle}>{strings.size}</Text>
             <Text style={textStyles.description}>{`${maxSize} ${strings.meters}`}</Text>
 
         </View>
